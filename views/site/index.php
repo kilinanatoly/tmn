@@ -38,7 +38,7 @@ $this->title = 'Главная страница';
                                         <img src="/images/tmn__item_dialog1.png">
                                     </div>
                                     <div class="tmn1__item_text">
-                                        <p>'.$value2->username.', 19 лет</p>
+                                        <p>'.$value2->username.', '.(\app\models\Functions::calculate_age($value2->birthday)).' лет</p>
                                         <p>'.Yii::$app->params['cities'][$value2->city].'</p>
                                     </div>
                                </div>';

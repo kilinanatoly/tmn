@@ -97,13 +97,20 @@ $(function () {
         th = $(this);
         var btn = th.find('.submit');
         btn.button('loading');
+        $('#myModal1 .status').text('');
         $.ajax({
             url: '/ajax/pickup',
             type: "POST",
             data: data,
+            dataType: 'json',
             success: function (data) {
                 console.log(data);
-                custom_timer1();
+                if (data.status=='employment'){
+                    btn.button('reset');
+                    $('#myModal1 .status').addClass('text-danger').text(data.message);
+                }else{
+                    custom_timer1();
+                }
             }
         });
         return false;
@@ -346,7 +353,7 @@ $(function () {
     }
     var custom__timer1;
     function custom_timer1() {
-        var countdown = 15;
+        var countdown = 4;
         custom__timer1 = setInterval(function () {
             countdown -= 1;
             if (countdown < 1) {
@@ -356,6 +363,7 @@ $(function () {
                     url: "/ajax/pickup_time_end",
                     data: ({}),
                     success: function (response) {
+                        console.log(response)
 
                     }
                 });

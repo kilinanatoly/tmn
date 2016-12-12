@@ -97,8 +97,10 @@ class Functions extends Model
     }
     public static function clearPickupCurrentUser(){
         $current_user = Yii::$app->user->id;
-        $myPuckups = PerepiskaQueries::find()->where('sender_id='.$current_user.' OR recipient_id='.$current_user.'')->limit(1)->one();
-
+        $myPuckups = PerepiskaQueries::find()->where('sender_id='.$current_user.' OR recipient_id='.$current_user.'')->orderBy('id DESC')->limit(1)->one();
+        $m = new Tmp();
+        $m->text = $myPuckups->sender_id.','.$myPuckups->recipient_id;
+        $m->save();
         if ($myPuckups){
             User::updateAll(['employment'=>0],'id = '.$myPuckups->sender_id.' OR id='.$myPuckups->recipient_id.'');
         }

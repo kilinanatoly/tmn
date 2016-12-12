@@ -49,9 +49,9 @@ class AjaxController extends Controller
                             <div class="new-pickup1-block2__city">Город: '.Yii::$app->params['cities'][$user->city].'</div>
                             <hr>
                             <input type="hidden" name="user_id" value="' . $user->id . '">
-                            <button type="submit" class="btn btn-success submit new-pickup1-block2__btn1" data-loading-text="Подождите...">Познакомиться</button>
-                            <button type="submit" class="btn btn-danger canceled new-pickup1-block2__btn2" data-dismiss="modal" aria-hidden="true">Закрыть</button>
-                            <p class="status"></p>
+                            <p class="status new-pickup1-block2__status"></p>
+                            <button type="submit" class="btn submit new-pickup1-block2__btn1" data-loading-text="Подождите...">Познакомиться</button>
+                            <button type="submit" class="btn canceled new-pickup1-block2__btn2" data-dismiss="modal" aria-hidden="true">Закрыть</button>
                         </div>
                     </div>
                 ';
@@ -78,15 +78,21 @@ class AjaxController extends Controller
                         $sender_user->employment = 1;
                         $sender_user->save();
 
-                        return 'success';
+                        $res['status'] =  'success';
                     }else{
-                        return 'fail';
+                        $res['status'] =  'fail';
                     }
+                    return Json::encode($res);
+
                 }
-                return 'employment';
-            }
+                $res['status'] = 'employment';
+                $res['message'] = 'Пользователь занят, попробуйте позже';
+                return Json::encode($res);
+                }
         }
-        return 'fail';
+        $res['status'] = 'fail';
+        return Json::encode($res);
+
     }
 
     public function actionCheckPickup(){
@@ -564,8 +570,8 @@ class AjaxController extends Controller
                             <img src="/images/tmn__item_dialog1.png">
                         </div>
                         <div class="tmn1__item_text">
-                            <p>Анастасия, 19 лет</p>
-                            <p>Набережные Челны</p>
+                            <p>'.$value2->username.', '.(\app\models\Functions::calculate_age($value2->birthday)).' лет</p>
+                            <p>'.Yii::$app->params['cities'][$value2->city].'</p>
                         </div>
                    </div>';
         }
